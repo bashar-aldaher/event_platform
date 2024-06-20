@@ -1,11 +1,15 @@
+import CategoryFilter from "@/components/shared/categoryFilter/CategoryFilter";
 import Collection from "@/components/shared/collection/Collection";
-import useGetData from "@/hooks/useGetData";
+import Search from "@/components/shared/search/Search";
 import { getAllEvents } from "@/lib/actions/event.action";
 import { SearchParamProps } from "@/types";
 import React from "react";
 
 const Events = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || "";
+  const category = (searchParams?.category as string) || "";
+
   // const [page, setPage] = useState(1);
   // const { data, isLoading } = useGetData(() =>
   //   getAllEvents({
@@ -17,9 +21,9 @@ const Events = async ({ searchParams }: SearchParamProps) => {
   // );
 
   const data = await getAllEvents({
-    query: "",
-    category: "",
-    page: 1,
+    query: searchText,
+    category,
+    page,
     limit: 6,
   });
 
@@ -29,10 +33,10 @@ const Events = async ({ searchParams }: SearchParamProps) => {
         Trust by <br /> Thousands of Events
       </h2>
 
-      {/* <div className="flex w-full flex-col gap-5 md:flex-row">
-     <Search />
-     <CategoryFilter />
-   </div>*/}
+      <div className="flex w-full flex-col gap-5 md:flex-row">
+        <Search />
+        <CategoryFilter />
+      </div>
 
       <Collection
         data={data.data}
